@@ -1,0 +1,74 @@
+@startuml "用例图"
+left to right direction
+actor "未知用户" as USER
+
+usecase "注册" as Register
+usecase "登录" as Login
+
+USER --> Register
+Register --> USER
+
+package 正式成员 {
+  actor "管理员" as ADMIN
+  actor "用户" as R_USER
+}
+
+R_USER <|-- ADMIN
+
+USER --> Login
+Login -> R_USER
+Login -> ADMIN
+
+
+
+package 管理功能 {
+  usecase "添加用户" as ADD_USER
+  usecase "删除用户" as DELETE_USER
+  usecase "列出用户" as LIST_USER
+}
+
+ADMIN -down-> ADD_USER
+ADMIN -down-> DELETE_USER
+ADMIN -down-> LIST_USER
+
+actor "Google File System" as GFS
+actor "文件上传" as file_upload
+actor "文件下载" as file_download
+
+note bottom of file_upload : 客户端获取到持有该 Chunk Lease 的 Chunk Server 后\n推送数据到所有 Replica 并按顺序储存、修改客户端所需要的数据
+
+note bottom of file_download : 向Master获取文件的Chunk索引值\n并向ChunkServer发起指定读取范围的数据
+
+GFS <|-- file_upload
+GFS <|-- file_download
+
+R_USER --> file_upload
+R_USER --> file_download
+
+package "Google File System" as GFS_ {
+  package "Master" as master {
+    usecase "获取 Chunk Location" as chunk_location
+    usecase "获取 Primary 和 Replica 位置" as get_location
+  }
+
+  package "Chunk Server(s)" as chunk_server{
+    usecase "获取 Chunk data" as chunk_data
+    usecase "推送数据到所有的 Replica 并按顺序储存" as store_to_all
+  }
+
+  note right of chunk_data : 有多个 replica\n会选择最近的一个返回
+  
+}
+
+' ----------------download--------------------
+file_download --> chunk_location : "获取文件所在的 Chunk Server"
+file_download --> chunk_data : "发送 Chunk Handle, byte range"
+
+chunk_server --> file_download : "返回 chunk data"
+
+
+' ---------------upload-----------------------
+file_upload --> get_location
+file_upload --> store_to_all
+
+@enduml
