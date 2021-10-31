@@ -1,74 +1,74 @@
 @startuml "用例图"
 left to right direction
-actor "未知用户" as USER
+actor "游客" as USER
 
 usecase "注册" as Register
 usecase "登录" as Login
+usecase "安全验证" as Verification
+usecase "找回密码" as Recover
+usecase "自动登录" as Automatic_login
+usecase "邮箱验证" as Email
 
-USER --> Register
-Register --> USER
+USER -down-> Register
 
-package 正式成员 {
-  actor "管理员" as ADMIN
-  actor "用户" as R_USER
-}
+Email .up.> Register : <<include>>
+Verification .up.> Login : <<include>>
+Recover .up.> Login : <<extends>>
+Automatic_login .up.> Login : <<extends>>
+
+actor "管理员" as ADMIN
+actor "用户" as R_USER
 
 R_USER <|-- ADMIN
-
-USER --> Login
-Login -> R_USER
-Login -> ADMIN
-
-
+R_USER <|-- USER
+R_USER ->Login 
+ADMIN -> Login
 
 package 管理功能 {
   usecase "添加用户" as ADD_USER
   usecase "删除用户" as DELETE_USER
-  usecase "列出用户" as LIST_USER
+  usecase "用户列表" as LIST_USER
+  usecase "删除文件" as Delete_file
+
+  Delete_file .up.> DELETE_USER : <<include>>
 }
 
 ADMIN -down-> ADD_USER
 ADMIN -down-> DELETE_USER
 ADMIN -down-> LIST_USER
 
-actor "Google File System" as GFS
-actor "文件上传" as file_upload
-actor "文件下载" as file_download
+usecase "文件上传" as UPLOAD
+usecase "文件下载" as DOWNLOAD
+usecase "文件修改" as UPDATE
+usecase "文件删除" as DELETE
+usecase "文件分享" as SHARE
+usecase "文件列表" as FILE_LIST
+usecase "文件克隆" as File_clone
 
-note bottom of file_upload : 客户端获取到持有该 Chunk Lease 的 Chunk Server 后\n推送数据到所有 Replica 并按顺序储存、修改客户端所需要的数据
+R_USER -up-> UPLOAD
+R_USER -up-> DOWNLOAD
+R_USER -up->UPDATE
+R_USER -up->DELETE
+R_USER -up->SHARE
+R_USER -up->FILE_LIST
+R_USER -up->File_clone
 
-note bottom of file_download : 向Master获取文件的Chunk索引值\n并向ChunkServer发起指定读取范围的数据
+usecase "文件保存" as PRESERVE
+usecase "生成链接" as LINK
+usecase "时间排序" as TIME_SORT
+usecase "大小排序" as SIZE_SORT
 
-GFS <|-- file_upload
-GFS <|-- file_download
+LINK .down.> SHARE : <<include>>
+PRESERVE .down.> UPDATE : <<include>>
+PRESERVE .down.> UPLOAD : <<include>>
 
-R_USER --> file_upload
-R_USER --> file_download
+TIME_SORT -down-|> FILE_LIST
+SIZE_SORT -down-|> FILE_LIST
 
-package "Google File System" as GFS_ {
-  package "Master" as master {
-    usecase "获取 Chunk Location" as chunk_location
-    usecase "获取 Primary 和 Replica 位置" as get_location
-  }
+usecase "文件加密" as ENCRYPTION
+usecase "设置有效期" as Validity
 
-  package "Chunk Server(s)" as chunk_server{
-    usecase "获取 Chunk data" as chunk_data
-    usecase "推送数据到所有的 Replica 并按顺序储存" as store_to_all
-  }
-
-  note right of chunk_data : 有多个 replica\n会选择最近的一个返回
-  
-}
-
-' ----------------download--------------------
-file_download --> chunk_location : "获取文件所在的 Chunk Server"
-file_download --> chunk_data : "发送 Chunk Handle, byte range"
-
-chunk_server --> file_download : "返回 chunk data"
-
-
-' ---------------upload-----------------------
-file_upload --> get_location
-file_upload --> store_to_all
+ENCRYPTION .down.> PRESERVE : <<extends>>
+Validity .down.> LINK : <<include>>
 
 @enduml

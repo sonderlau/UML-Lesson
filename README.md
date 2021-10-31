@@ -95,4 +95,13 @@ java -jar plantuml.jar -svg /src/Class.wsd -o /out/
 
     *   <https://andrewei1316.github.io/2020/10/05/google-file-system/>
 
-*
+
+
+## 分工
+
+| Chapter | 人员  | 备注 |
+| ------- | ----- | ---- |
+| Usecase | 洪 潘 |      |
+| Class   | 刘    |      |
+| State   |       |      |
+
