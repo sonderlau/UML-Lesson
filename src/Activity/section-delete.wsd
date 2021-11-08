@@ -1,0 +1,39 @@
+@startuml "Delete"
+
+|Client|
+start
+:Delete request;
+note left
+    It's like upload but
+    set all blocks'name to 'datastamp'
+    to make them as 'hiding files'
+    waiting for remove
+end note
+
+|Master|
+:remove - all the blocks;
+
+|ChunkServer|
+-> to all replicas;
+:remove;
+
+|Master|
+partition GarbageCollecting {
+    fork
+        :remove - metadata;
+    fork again
+        :remove - orphaned chunks;
+
+        :remove metadata;
+
+        -> heartbeat to all replica;
+        :inform to remove this file;
+    end fork
+    
+
+}
+
+|Client|
+end
+
+@enduml

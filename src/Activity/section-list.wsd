@@ -1,0 +1,22 @@
+@startuml "List"
+
+|Client|
+start
+
+|Master|
+:Namespace;
+:Find all the blocks' indexes;
+
+|ChunkServer|
+-> Request;
+:Collect blocks;
+
+|Master|
+-> Send info back;
+:Generate infos;
+
+|Client|
+-> File name / size / updated time;
+end
+
+@enduml

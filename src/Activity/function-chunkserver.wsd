@@ -1,0 +1,43 @@
+@startuml "ChunkServer"
+start
+split
+    :Master require to create;
+
+    split
+        :最大可能提高磁盘利用率;
+    split again
+        :尽量降低最近新建chunk 的数量;
+    split again
+        :跨机器;
+    end split
+
+split again
+    :backup;
+    note right
+        即时同步
+    end note
+
+    :shadow server;
+    note right
+        准及时同步
+        只读
+    end note
+
+split again 
+    :数据完整性;
+    note right
+        32 位数据校验
+        独立于用户的数据
+    end note
+
+    :向用户传输数据之前;
+    :Master - checksum;
+    if(Wrong?) then(find another available replica)
+    else(no)
+        :返回;
+    endif
+
+end split
+
+end
+@enduml

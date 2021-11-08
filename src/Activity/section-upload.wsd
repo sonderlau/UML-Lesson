@@ -1,0 +1,33 @@
+@startuml "Upload"
+
+|Client|
+:Request lease;
+
+|Master|
+:Check if it's existed and distribute replica;
+
+|Client|
+-> identity other replica's location;
+:cache;
+
+|Chunkserver|
+-> push;
+:All replica;
+
+|Client|
+-> confirmation;
+:request;
+
+|Chunkserver|
+:primary replica;
+-> push to all;
+:secondary replica;
+-> notificate;
+:execute 'mutation';
+
+|Client|
+-> get feedback from primary
+errors included if had;
+end
+
+@enduml

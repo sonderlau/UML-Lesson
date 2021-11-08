@@ -1,0 +1,34 @@
+@startuml "Master Function"
+start
+
+    :Namespcae management;
+    note left
+        /d1/d2/leaf
+                to
+        /a1/d2/leaf
+    end note
+    note right
+        允许并发
+        R-L 锁提供了 路径重命名 移除 快照的功能
+        文件名序列化允许了多重创建 相同名称的文件
+        序列化处理防止了死锁
+    end note
+
+    split
+        :Snapshot;
+        :Read lock
+            /d1 
+            /a1;
+        :Write lock
+            /d1/d2
+            /a1/d2;
+    split again
+        :Create file;
+        :Read lock
+            /d1
+            /a1/d2;
+        :Write lock
+            /d1/d2/leaf;
+    end split
+end
+@enduml

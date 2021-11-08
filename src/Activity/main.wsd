@@ -1,0 +1,31 @@
+@startuml "活动图"
+
+
+if(Registered?) then (Yes)
+
+else(No)
+  repeat
+    :Register;
+    backward: Not yet;
+  repeat while(Done?)
+endif
+
+:Login;
+
+
+  :Authority Ensurance;
+
+
+  fork
+    :Download;
+  fork again
+    :Upload;
+  fork again
+    :List;
+  fork again
+    :Delete;
+  end fork
+
+:End;
+@enduml
+

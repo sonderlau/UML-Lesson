@@ -1,0 +1,26 @@
+@startuml "Download"
+
+|Client|
+start
+:Specify files;
+
+|Master|
+:Check namespace;
+
+|ChunkServer|
+-> instructions;
+:file indexes;
+
+|Master|
+-> feed back;
+:New request;
+
+|ChunkServer|
+-> to the latest replica or 
+the latest chunkserver;
+:Get ready to transfer files;
+
+|Client|
+-> Data flow;
+end
+@enduml
