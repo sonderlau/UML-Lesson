@@ -1,4 +1,4 @@
-@startuml "用例图"
+@startuml "Usecase"
 left to right direction
 actor "游客" as USER
 
@@ -25,17 +25,25 @@ R_USER ->Login
 ADMIN -> Login
 
 package 管理功能 {
+  usecase "审查举报信息" as check_File
   usecase "添加用户" as ADD_USER
   usecase "删除用户" as DELETE_USER
   usecase "用户列表" as LIST_USER
+  usecase "查询用户信息" as Search_UserInfo
+  usecase "查看用户文件" as Search_File
   usecase "删除文件" as Delete_file
 
+  Search_File .up.> Search_UserInfo : <<extends>>
+  Delete_file .> Search_File : <<extends>>
+  Delete_file .up.> check_File : <<extends>>
   Delete_file .up.> DELETE_USER : <<include>>
 }
 
 ADMIN -down-> ADD_USER
 ADMIN -down-> DELETE_USER
 ADMIN -down-> LIST_USER
+ADMIN -down-> Search_UserInfo
+ADMIN -down-> check_File
 
 usecase "文件上传" as UPLOAD
 usecase "文件下载" as DOWNLOAD
@@ -43,24 +51,28 @@ usecase "文件修改" as UPDATE
 usecase "文件删除" as DELETE
 usecase "文件分享" as SHARE
 usecase "文件列表" as FILE_LIST
-usecase "文件克隆" as File_clone
+usecase "查看分享文件" as Browse_share
 
 R_USER -up-> UPLOAD
 R_USER -up-> DOWNLOAD
 R_USER -up->UPDATE
 R_USER -up->DELETE
 R_USER -up->SHARE
+R_USER -up->Browse_share
 R_USER -up->FILE_LIST
-R_USER -up->File_clone
 
 usecase "文件保存" as PRESERVE
 usecase "生成链接" as LINK
 usecase "时间排序" as TIME_SORT
 usecase "大小排序" as SIZE_SORT
+usecase "文件克隆" as File_clone
+usecase "举报" as report
 
 LINK .down.> SHARE : <<include>>
 PRESERVE .down.> UPDATE : <<include>>
 PRESERVE .down.> UPLOAD : <<include>>
+File_clone .down.> Browse_share : <<extends>>
+report .down.> Browse_share : <<extends>>
 
 TIME_SORT -down-|> FILE_LIST
 SIZE_SORT -down-|> FILE_LIST

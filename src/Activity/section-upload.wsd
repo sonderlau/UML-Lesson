@@ -1,33 +1,33 @@
 @startuml "Upload"
 
 |Client|
-:Request lease;
+:请求租约 Lease;
 
 |Master|
-:Check if it's existed and distribute replica;
+:检查是否存在并分配 replica;
 
 |Client|
--> identity other replica's location;
-:cache;
+-> 确认其他的 replica 的位置;
+:缓存位置信息;
 
 |Chunkserver|
--> push;
-:All replica;
+-> 推送数据流;
+:所有的 replica 服务器;
 
 |Client|
--> confirmation;
-:request;
+-> 确认;
+:收到确认信息;
 
 |Chunkserver|
-:primary replica;
--> push to all;
-:secondary replica;
--> notificate;
-:execute 'mutation';
+:主 replica;
+-> 推送到所有服务器;
+:次 replica;
+-> 通知;
+:按照顺序解决 'mutation';
 
 |Client|
--> get feedback from primary
-errors included if had;
+-> Primary 服务器发送完成信息
+如果有错误也一并返回;
 end
 
 @enduml

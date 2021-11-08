@@ -2,32 +2,31 @@
 
 |Client|
 start
-:Delete request;
+:删除;
 note left
-    It's like upload but
-    set all blocks'name to 'datastamp'
-    to make them as 'hiding files'
-    waiting for remove
+    类似于上传但是将所有的
+    块 名称设置为日期标签的格式
+    让文件成为隐藏文件并等待删除
 end note
 
 |Master|
-:remove - all the blocks;
+:remove - 删除所有的块;
 
 |ChunkServer|
--> to all replicas;
+-> 对所有的 replicas;
 :remove;
 
 |Master|
-partition GarbageCollecting {
+partition 垃圾回收 {
     fork
         :remove - metadata;
     fork again
-        :remove - orphaned chunks;
+        :remove - orphaned chunks 孤立块;
 
         :remove metadata;
 
-        -> heartbeat to all replica;
-        :inform to remove this file;
+        -> heartbeat 心跳包到所有的 replica;
+        :通知可以删除此文件;
     end fork
     
 

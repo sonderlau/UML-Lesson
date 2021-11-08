@@ -1,10 +1,11 @@
 @startuml "Master Function"
 start
 
-    :Namespcae management;
+    :Namespcae 管理;
     note left
+        例子：
         /d1/d2/leaf
-                to
+                到
         /a1/d2/leaf
     end note
     note right
@@ -15,19 +16,19 @@ start
     end note
 
     split
-        :Snapshot;
-        :Read lock
+        :Snapshot 快照;
+        :Read lock 读锁
             /d1 
             /a1;
-        :Write lock
+        :Write lock 写锁
             /d1/d2
             /a1/d2;
     split again
         :Create file;
-        :Read lock
+        :Read lock 读锁
             /d1
             /a1/d2;
-        :Write lock
+        :Write lock 写锁
             /d1/d2/leaf;
     end split
 end

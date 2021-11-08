@@ -68,7 +68,7 @@ Orace AdoptOpenJDK 都可以
 ### 命令行
 
 ```bash
-java -jar plantuml.jar -svg /src/Class.wsd -o /out/
+java -jar plantuml.jar -charset utf-8 -svg /src/Class.wsd -o /out/
 ```
 
 **不推荐使用 但如果有需要可以按照上述的格式进行输出**
@@ -99,9 +99,10 @@ java -jar plantuml.jar -svg /src/Class.wsd -o /out/
 
 ## 分工
 
-| Chapter | 人员  | 备注 |
-| ------- | ----- | ---- |
-| Usecase | 洪 潘 |      |
-| Class   | 刘    |      |
-| State   |       |      |
+| Chapter  | 人员     | 备注           |
+| -------- | -------- | -------------- |
+| Usecase  | 洪 潘    |                |
+| Class    | 刘       |                |
+| Activity | 刘       |                |
+| Mid-Term | 洪 潘 刘 | 整合前三次作业 |
 
