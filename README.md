@@ -105,4 +105,5 @@ java -jar plantuml.jar -charset utf-8 -svg /src/Class.wsd -o /out/
 | Class    | 刘       |                |
 | Activity | 刘       |                |
 | Mid-Term | 洪 潘 刘 | 整合前三次作业 |
+| Sequence | 刘 洪    |                |
 
