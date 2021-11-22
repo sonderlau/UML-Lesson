@@ -1,0 +1,21 @@
+@startuml "Delete"
+
+actor "User" as user
+participant "校验" as calibration
+participant "Master" as master
+participant "Chunkserver" as chunkserver
+
+user -> calibration : Token + 删除
+calibration -> master : 删除
+master -> chunkserver : 块 信息
+group 垃圾回收 [定时执行]
+chunkserver -> chunkserver : 储存待删除块的信息
+
+end
+chunkserver -> master : 请求收到
+
+master -> master : 删除元信息
+
+master -> user : 请求完成
+
+@enduml

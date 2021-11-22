@@ -1,0 +1,22 @@
+@startuml "Data Calibration"
+participant "Master" as master
+database "Master Disk" as disk_m
+
+participant "Chunkserver" as chunkserver
+participant "Chunkserver Secondary" as secondary
+
+master -> disk_m : 请求文件块的 校验 结果
+disk_m -> master: 校验失败
+
+master -> chunkserver : 请求校验正确的文件块
+chunkserver -> secondary : 请求校验正确的文件块
+
+secondary -> chunkserver : 存在正确的块
+chunkserver -> master: 正确的块的地址信息
+
+chunkserver -> secondary : 修正所有错误块的信息
+secondary -> chunkserver : 修正完成
+
+
+
+@enduml

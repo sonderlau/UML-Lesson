@@ -1,0 +1,23 @@
+@startuml "Download"
+
+actor "User" as user
+participant "校验" as calibration
+participant "Master" as master
+participant "Chunkserver" as chunkserver
+
+user -> calibration : Token + 指定文件
+
+activate master
+calibration -> master : 文件信息
+master -> chunkserver : 找到 块
+chunkserver -> master : 块 信息
+master -> user : 准备就绪
+deactivate master
+
+
+user -> calibration: Token
+calibration -> chunkserver : 请求下载
+
+chunkserver -> user : 推流
+
+@enduml

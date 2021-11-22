@@ -1,0 +1,6 @@
+{
+    "plantuml.jar": "/mnt/d/repositories/UML-Lesson/plantuml.jar",
+    "plantuml.jarArgs": [
+        " -charset UTF-8"
+    ]
+}

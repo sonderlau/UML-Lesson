@@ -1,0 +1,13 @@
+@startuml "Upload"
+
+user -> Calibration_center : 发送lease进行校验
+activate Calibration_center
+Calibration_center -> Master_namespace : 查找user的文件存储索引
+deactivate Calibration_center
+activate Master_namespace
+Master_namespace -> user : 返回user的文件存储索引
+deactivate Master_namespace
+user -> chunkServer : 写入文件流
+chunkServer -> user : 返回响应信息
+
+@enduml
