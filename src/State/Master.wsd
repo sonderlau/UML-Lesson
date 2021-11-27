@@ -1,0 +1,19 @@
+@startuml "Master"
+left to right direction
+state "空闲" as free
+state "忙碌" as busy
+state "错误" as mistake
+state c <<choice>>
+state c1 <<choice>>
+[*]  -right-> free
+[*] -down->busy : 重现现场
+free -right->c1 : 发出心跳包
+c1 --> free : 备份接受心跳包
+c1 -->mistake : 备份未接受心跳包
+free --> busy : 接受指令
+busy -->free : 完成指令
+busy -->mistake : 出现异常
+mistake --> c : 处理错误
+c --> free : 处理成功
+c-->[*] : 处理失败
+@enduml

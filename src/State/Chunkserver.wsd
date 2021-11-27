@@ -1,0 +1,26 @@
+@startuml "chunkServer"
+state "空闲" as free 
+state "忙碌" as busy 
+state "损坏" as bad 
+state "集群错误" as error 
+state c1 <<choice>>
+state c2 <<choice>>
+
+[*] -down-> free
+free -right-> busy : 收到请求
+free -right-> c2 : 发送心跳包
+
+[*] -right-> bad
+bad -right-> [*] : 转发备份服务器
+
+c2 -down-> free : 及时接收
+c2 -> error : 不及时接收
+
+busy -> error : 出现异常
+
+error -> c1 : 错误处理
+
+c1 -> free : 成功
+c1 -> [*] : 失败
+
+@enduml
