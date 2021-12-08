@@ -1,29 +1,29 @@
 @startuml "活动图"
 
 
-if(Registered?) then (Yes)
+if(已注册?) then (Yes)
 
 else(No)
   repeat
-    :Register;
-    backward: Not yet;
-  repeat while(Done?)
+    :注册;
+    backward: 还未完成;
+  repeat while(完成?)
 endif
 
-:Login;
+:登录;
 
 
-  :Authority Ensurance;
+  :权限校验;
 
 
   fork
-    :Download;
+    :下载;
   fork again
-    :Upload;
+    :上传;
   fork again
-    :List;
+    :罗列;
   fork again
-    :Delete;
+    :删除;
   end fork
 
 :End;

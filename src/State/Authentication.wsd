@@ -1,0 +1,11 @@
+@startuml "Authentication"
+left to right direction
+state c <<choice>>
+state "通过" as pass
+state "失败" as fail
+[*] -right-> c : 认证登录
+c-right->pass
+c-->fail
+pass -down-> [*] : 保存信息
+fail -right->[*] : 返回错误
+@enduml

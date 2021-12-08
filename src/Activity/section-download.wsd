@@ -2,25 +2,24 @@
 
 |Client|
 start
-:Specify files;
+:确定文件;
 
 |Master|
-:Check namespace;
+:搜索 Namespace;
 
 |ChunkServer|
--> instructions;
-:file indexes;
+-> 下发指令;
+:文件索引;
 
 |Master|
--> feed back;
-:New request;
+-> 返回;
+:请求下载;
 
 |ChunkServer|
--> to the latest replica or 
-the latest chunkserver;
-:Get ready to transfer files;
+-> 向最新的replica或者最近的replica;
+:准备传输文件;
 
 |Client|
--> Data flow;
+-> 数据流;
 end
 @enduml

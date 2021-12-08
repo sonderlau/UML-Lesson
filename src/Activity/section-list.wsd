@@ -4,19 +4,19 @@
 start
 
 |Master|
-:Namespace;
-:Find all the blocks' indexes;
+:Namespace 检查;
+:通过索引找到文件所有的块;
 
 |ChunkServer|
--> Request;
-:Collect blocks;
+-> 请求;
+:收集块的信息;
 
 |Master|
--> Send info back;
-:Generate infos;
+-> 返回信息;
+:整合;
 
 |Client|
--> File name / size / updated time;
+-> 文件名 / 大小 / 更新时间等;
 end
 
 @enduml

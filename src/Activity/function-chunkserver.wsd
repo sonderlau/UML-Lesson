@@ -1,7 +1,7 @@
 @startuml "ChunkServer"
 start
 split
-    :Master require to create;
+    :Master 要求创建文件;
 
     split
         :最大可能提高磁盘利用率;
@@ -12,7 +12,7 @@ split
     end split
 
 split again
-    :backup;
+    :备份;
     note right
         即时同步
     end note
@@ -31,8 +31,8 @@ split again
     end note
 
     :向用户传输数据之前;
-    :Master - checksum;
-    if(Wrong?) then(find another available replica)
+    :Master - 校验;
+    if(错误?) then(寻找其他可用的replica)
     else(no)
         :返回;
     endif

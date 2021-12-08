@@ -1,0 +1,11 @@
+@startuml "List"
+
+user -> Calibration_center : 发送lease进行校验
+activate Calibration_center
+Calibration_center -> Master_namespace : 查找user的文件列表
+deactivate Calibration_center
+Master_namespace -> chunkServer : 查询文件
+chunkServer -> Master_namespace : 返回文件索引并校验
+Master_namespace -> user : 返回文件列表
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml "Login"
+
+actor "User" as user
+participant "认证" as authority
+participant "校验" as calibration
+database "用户信息" as db
+participant "Master" as master
+
+
+user ->  authority : 登录信息
+activate authority
+authority -> calibration : 用户信息
+calibration -> db : 确认信息
+db -> authority : 信息比对完成
+authority -> user : User-Info Token + 请求操作
+deactivate authority
+
+user -> calibration : User-Info Token
+
+activate master
+calibration -> master: 操作信息
+master -> user: 操作完成
+deactivate master
+
+
+@enduml

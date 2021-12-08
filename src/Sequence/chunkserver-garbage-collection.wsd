@@ -1,0 +1,19 @@
+@startuml "Chunkserver Backup"
+control "Chunkserver Control" as core
+
+database "Disk" as disk
+
+participant "Master" as master
+
+core -> master : 请求 Meta 信息
+master -> core: 通知所有 次级 Chunkserver
+
+core -> disk: 删除块
+disk -> core: 完成
+
+core -> master: 文件删除成功
+master -> core: 删除结束
+
+
+
+@enduml
