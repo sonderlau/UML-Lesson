@@ -1,0 +1,23 @@
+@startuml "管理"
+
+start
+
+:管理查看;
+
+:识色;
+
+:颜色对比误差大;
+
+:识别错误反馈;
+
+split
+    -> 查看;
+    :收集试色效果;
+split again
+    -> 查看;
+    :拾色错误;
+end split
+
+end
+
+@enduml

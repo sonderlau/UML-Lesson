@@ -1,0 +1,24 @@
+@startuml "活动图"
+
+start
+
+:用户查询;
+
+:用户查看历史;
+
+:用户获取历史推荐;
+
+split
+    -> 查看;
+    :用户获取新品推荐;
+split again
+    -> 点击收藏;
+    :收藏;
+end split
+
+end
+
+
+
+
+@enduml
