@@ -1,0 +1,6 @@
+{
+    "plantuml.jar": "/home/max/devs/UML-Lesson/plantuml.jar",
+    "plantuml.jarArgs":[
+        " -charset utf-8"
+    ]
+}
