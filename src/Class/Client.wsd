@@ -1,0 +1,44 @@
+@startuml "类图 - Client"
+
+namespace client {
+    class Client  {
+        - master gfs.ServerAddress
+        - leaseBuf *leaseBuffer
+
+        + Create(path gfs.Path) error
+        + Delete(path gfs.Path) error
+        + Rename(source gfs.Path, target gfs.Path) error
+        + Mkdir(path gfs.Path) error
+        + List(path gfs.Path) ([]gfs.PathInfo, error)
+        + Read(path gfs.Path, offset gfs.Offset, data []byte) (int, error)
+        + Write(path gfs.Path, offset gfs.Offset, data []byte) error
+        + Append(path gfs.Path, data []byte) (gfs.Offset, error)
+        + GetChunkHandle(path gfs.Path, index gfs.ChunkIndex) (gfs.ChunkHandle, error)
+        + ReadChunk(handle gfs.ChunkHandle, offset gfs.Offset, data []byte) (int, error)
+        + WriteChunk(handle gfs.ChunkHandle, offset gfs.Offset, data []byte) error
+        + AppendChunk(handle gfs.ChunkHandle, data []byte) (gfs.Offset, error)
+
+    }
+    class leaseBuffer  {
+        - master gfs.ServerAddress
+        - buffer <font color=blue>map</font>[gfs.ChunkHandle]*gfs.Lease
+        - tick time.Duration
+
+        + Get(handle gfs.ChunkHandle) (*gfs.Lease, error)
+
+    }
+
+    class RWMutex
+
+    interface API
+
+    Client -right-> leaseBuffer
+
+    leaseBuffer -down-> RWMutex
+
+    Client -down- API
+}
+
+
+
+@enduml

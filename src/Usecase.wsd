@@ -1,6 +1,8 @@
 @startuml "Usecase"
 left to right direction
 actor "游客" as USER
+actor "MasterServer" as master_server
+actor "Chunkserver" as chunkserver
 
 usecase "注册" as Register
 usecase "登录" as Login
@@ -47,10 +49,31 @@ ADMIN -down-> check_File
 
 usecase "文件上传" as UPLOAD
 usecase "文件下载" as DOWNLOAD
+usecase "完整性校验" as data_checksum
+usecase "Namespace 管理" as namespace_management
+usecase "文件快照" as snapshot
+DOWNLOAD .left.> data_checksum : <<include>>
+
+master_server -left-> namespace_management
+master_server -left-> data_checksum
+master_server -left-> snapshot
+
 usecase "文件修改" as UPDATE
 usecase "文件删除" as DELETE
 usecase "文件分享" as SHARE
 usecase "文件列表" as FILE_LIST
+usecase "按时间排序" as sort_by_time
+usecase "按大小排序" as sort_by_size
+
+sort_by_size -up-> FILE_LIST
+sort_by_time -up-> FILE_LIST
+
+usecase "数据备份" as data_backup
+
+chunkserver --> data_backup
+
+
+
 usecase "查看分享文件" as Browse_share
 
 R_USER -up-> UPLOAD
@@ -82,5 +105,9 @@ usecase "设置有效期" as Validity
 
 ENCRYPTION .down.> PRESERVE : <<extends>>
 Validity .down.> LINK : <<include>>
+
+
+PRESERVE ..> data_backup : <<include>>
+DELETE ..> data_backup : <<include>>
 
 @enduml

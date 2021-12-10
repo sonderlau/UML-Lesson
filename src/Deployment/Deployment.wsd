@@ -1,0 +1,31 @@
+@startuml "部署图"
+
+node "Master" as master
+node "Master 备份" as master_backup
+
+node "Client" as client
+
+node "Chunkserver" as chunkserver
+node "Chunkserver 备份" as chunkserver_backup
+node "Chunkserver 影子备份" as chunkserver_shadow
+
+node "Secondary Chunkserver" as chunkserver_secondary
+node "Chunkserver 备份" as chunkserver_secondary_backup
+node "Chunkserver 影子备份" as chunkserver_secondary_shadow
+
+master -- master_backup
+
+master -- client
+master -- chunkserver
+master -- chunkserver_secondary
+
+chunkserver -- client
+chunkserver -- chunkserver_backup
+chunkserver -- chunkserver_shadow
+
+chunkserver_secondary -- chunkserver_secondary_backup
+chunkserver_secondary -- chunkserver_secondary_shadow
+
+
+
+@enduml

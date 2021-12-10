@@ -1,0 +1,88 @@
+@startuml "类图 - chunkserver"
+
+namespace chunkserver {
+    class ChunkServer  {
+        - lock sync.RWMutex
+        - address gfs.ServerAddress
+        - master gfs.ServerAddress
+        - rootDir string
+        - l net.Listener
+        - shutdown <font color=blue>chan</font> <font color=blue>struct</font>{}
+        - dl *downloadBuffer
+        - chunk <font color=blue>map</font>[gfs.ChunkHandle]*chunkInfo
+        - dead bool
+        - pendingLeaseExtensions *util.ArraySet
+        - garbage []gfs.ChunkHandle
+
+        - heartbeat() error
+        - garbageCollection() error
+        - loadMeta() error
+        - storeMeta() error
+        - writeChunk(handle gfs.ChunkHandle, data []byte, offset gfs.Offset, lock bool) error
+        - readChunk(handle gfs.ChunkHandle, offset gfs.Offset, data []byte) (int, error)
+        - deleteChunk(handle gfs.ChunkHandle) error
+        - doMutation(handle gfs.ChunkHandle, m *Mutation) error
+        - padChunk(handle gfs.ChunkHandle, version gfs.ChunkVersion) error
+
+        + RPCReportSelf(args gfs.ReportSelfArg, reply *gfs.ReportSelfReply) error
+        + Shutdown() 
+        + RPCCheckVersion(args gfs.CheckVersionArg, reply *gfs.CheckVersionReply) error
+        + RPCForwardData(args gfs.ForwardDataArg, reply *gfs.ForwardDataReply) error
+        + RPCCreateChunk(args gfs.CreateChunkArg, reply *gfs.CreateChunkReply) error
+        + RPCReadChunk(args gfs.ReadChunkArg, reply *gfs.ReadChunkReply) error
+        + RPCWriteChunk(args gfs.WriteChunkArg, reply *gfs.WriteChunkReply) error
+        + RPCAppendChunk(args gfs.AppendChunkArg, reply *gfs.AppendChunkReply) error
+        + RPCApplyMutation(args gfs.ApplyMutationArg, reply *gfs.ApplyMutationReply) error
+        + RPCSendCopy(args gfs.SendCopyArg, reply *gfs.SendCopyReply) error
+        + RPCApplyCopy(args gfs.ApplyCopyArg, reply *gfs.ApplyCopyReply) error
+        + PrintSelf(no1 gfs.Nouse, no2 *gfs.Nouse) error
+
+    }
+    class Mutation  {
+        - mtype gfs.MutationType
+        - data []byte
+        - offset gfs.Offset
+
+    }
+    class chunkInfo  {
+        - length gfs.Offset
+        - version gfs.ChunkVersion
+        - checksum gfs.Checksum
+        - mutations <font color=blue>map</font>[gfs.ChunkVersion]*Mutation
+        - abandoned bool
+
+    }
+    class downloadBuffer  {
+        - buffer <font color=blue>map</font>[gfs.DataBufferID]downloadItem
+        - expire time.Duration
+        - tick time.Duration
+
+        + Set(id gfs.DataBufferID, data []byte) 
+        + Get(id gfs.DataBufferID) ([]byte, bool)
+        + Fetch(id gfs.DataBufferID) ([]byte, error)
+        + Delete(id gfs.DataBufferID) 
+
+    }
+    class downloadItem  {
+        - data []byte
+        - expire time.Time
+
+    }
+    class RWMutex
+
+    interface RPC
+
+    ChunkServer -- RPC
+
+    ChunkServer --> Mutation
+
+    chunkInfo --> RWMutex
+
+    downloadBuffer --> RWMutex
+
+
+}
+
+
+
+@enduml

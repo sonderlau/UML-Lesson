@@ -1,0 +1,155 @@
+@startuml "类图 - Master"
+
+namespace master {
+    class Master  {
+        - address gfs.ServerAddress
+        - serverRoot string
+        - l net.Listener
+        - shutdown <font color=blue>chan</font> <font color=blue>struct</font>{}
+        - dead bool
+        - nm *namespaceManager
+        - cm *chunkManager
+        - csm *chunkServerManager
+
+        - initMetadata() 
+        - loadMeta() error
+        - storeMeta() error
+        - serverCheck() error
+        - reReplication(handle gfs.ChunkHandle) error
+
+        + Shutdown() 
+        + RPCHeartbeat(args gfs.HeartbeatArg, reply *gfs.HeartbeatReply) error
+        + RPCGetPrimaryAndSecondaries(args gfs.GetPrimaryAndSecondariesArg, reply *gfs.GetPrimaryAndSecondariesReply) error
+        + RPCExtendLease(args gfs.ExtendLeaseArg, reply *gfs.ExtendLeaseReply) error
+        + RPCGetReplicas(args gfs.GetReplicasArg, reply *gfs.GetReplicasReply) error
+        + RPCCreateFile(args gfs.CreateFileArg, reply *gfs.CreateFileReply) error
+        + RPCDeleteFile(args gfs.DeleteFileArg, reply *gfs.DeleteFileReply) error
+        + RPCRenameFile(args gfs.RenameFileArg, reply *gfs.RenameFileReply) error
+        + RPCMkdir(args gfs.MkdirArg, reply *gfs.MkdirReply) error
+        + RPCList(args gfs.ListArg, reply *gfs.ListReply) error
+        + RPCGetFileInfo(args gfs.GetFileInfoArg, reply *gfs.GetFileInfoReply) error
+        + RPCGetChunkHandle(args gfs.GetChunkHandleArg, reply *gfs.GetChunkHandleReply) error
+
+    }
+    class PersistentBlock  {
+        + NamespaceTree []serialTreeNode
+        + ChunkInfo []serialChunkInfo
+
+    }
+    class chunkInfo  {
+        - location []gfs.ServerAddress
+        - primary gfs.ServerAddress
+        - expire time.Time
+        - version gfs.ChunkVersion
+        - checksum gfs.Checksum
+        - path gfs.Path
+
+    }
+    class chunkManager  {
+        - chunk <font color=blue>map</font>[gfs.ChunkHandle]*chunkInfo
+        - file <font color=blue>map</font>[gfs.Path]*fileInfo
+        - replicasNeedList []gfs.ChunkHandle
+        - numChunkHandle gfs.ChunkHandle
+
+        + Deserialize(files []serialChunkInfo) error
+        + Serialize() []serialChunkInfo
+        + RegisterReplica(handle gfs.ChunkHandle, addr gfs.ServerAddress, useLock bool) error
+        + GetReplicas(handle gfs.ChunkHandle) ([]gfs.ServerAddress, error)
+        + GetChunk(path gfs.Path, index gfs.ChunkIndex) (gfs.ChunkHandle, error)
+        + GetLeaseHolder(handle gfs.ChunkHandle) (*gfs.Lease, []gfs.ServerAddress, error)
+        + ExtendLease(handle gfs.ChunkHandle, primary gfs.ServerAddress) error
+        + CreateChunk(path gfs.Path, addrs []gfs.ServerAddress) (gfs.ChunkHandle, []gfs.ServerAddress, error)
+        + RemoveChunks(handles []gfs.ChunkHandle, server gfs.ServerAddress) error
+        + GetNeedlist() []gfs.ChunkHandle
+
+    }
+    class chunkServerInfo  {
+        - lastHeartbeat time.Time
+        - chunks <font color=blue>map</font>[gfs.ChunkHandle]bool
+        - garbage []gfs.ChunkHandle
+
+    }
+    class chunkServerManager  {
+        - servers <font color=blue>map</font>[gfs.ServerAddress]*chunkServerInfo
+
+        + Heartbeat(addr gfs.ServerAddress, reply *gfs.HeartbeatReply) bool
+        + AddChunk(addrs []gfs.ServerAddress, handle gfs.ChunkHandle) 
+        + AddGarbage(addr gfs.ServerAddress, handle gfs.ChunkHandle) 
+        + ChooseReReplication(handle gfs.ChunkHandle) (gfs.ServerAddress, error)
+        + ChooseServers(num int) ([]gfs.ServerAddress, error)
+        + DetectDeadServers() []gfs.ServerAddress
+        + RemoveServer(addr gfs.ServerAddress) ([]gfs.ChunkHandle, error)
+
+    }
+    class fileInfo  {
+        - handles []gfs.ChunkHandle
+
+    }
+    class namespaceManager  {
+        - root *nsTree
+        - serialCt int
+
+        - tree2array(array *[]serialTreeNode, node *nsTree) int
+        - array2tree(array []serialTreeNode, id int) *nsTree
+        - lockParents(p gfs.Path, goDown bool) ([]string, *nsTree, error)
+        - unlockParents(ps []string) 
+
+        + Serialize() []serialTreeNode
+        + Deserialize(array []serialTreeNode) error
+        + PartionLastName(p gfs.Path) (gfs.Path, string)
+        + Create(p gfs.Path) error
+        + Delete(p gfs.Path) error
+        + Rename(source gfs.Path, target gfs.Path) error
+        + Mkdir(p gfs.Path) error
+        + List(p gfs.Path) ([]gfs.PathInfo, error)
+
+    }
+    class nsTree {
+        - isDir bool
+        - children <font color=blue>map</font>[string]*nsTree
+        - length int64
+        - chunks int64
+
+    }
+    class serialChunkInfo {
+        + Path gfs.Path
+        + Info []gfs.PersistentChunkInfo
+
+    }
+    class serialTreeNode {
+        + IsDir bool
+        + Children <font color=blue>map</font>[string]int
+        + Chunks int64
+
+    }
+
+    interface RPC
+
+    class RWMutex
+
+    Master -down-> namespaceManager
+
+    Master -down-> serialChunkInfo
+
+    Master -down- RPC
+
+    Master -down-> chunkServerManager
+
+    chunkServerManager -up-> chunkServerInfo
+
+    chunkServerManager --> RWMutex
+
+    chunkManager -left-> chunkServerInfo
+    chunkManager -left-> fileInfo
+    chunkManager -down-> RWMutex
+    chunkManager -down-> chunkInfo
+
+    nsTree -up-> RWMutex
+
+    fileInfo -down-> RWMutex
+
+    chunkInfo -left-> RWMutex : "chunkInfo"
+
+}
+
+@enduml
