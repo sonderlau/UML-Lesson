@@ -1,4 +1,4 @@
-@startuml "Download"
+@startuml "顺序图 - Download"
 
 actor "User" as user
 participant "校验" as calibration

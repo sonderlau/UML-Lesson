@@ -1,4 +1,4 @@
-@startuml "chunkServer"
+@startuml "状态图 - chunkServer"
 state "空闲" as free 
 state "忙碌" as busy 
 state "损坏" as bad 

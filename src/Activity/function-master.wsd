@@ -1,4 +1,4 @@
-@startuml "Master Function"
+@startuml "活动图 - Master Function"
 start
 
     :Namespcae 管理;
@@ -15,21 +15,12 @@ start
         序列化处理防止了死锁
     end note
 
-    split
-        :Snapshot 快照;
-        :Read lock 读锁
-            /d1 
-            /a1;
-        :Write lock 写锁
-            /d1/d2
-            /a1/d2;
-    split again
-        :Create file;
-        :Read lock 读锁
-            /d1
-            /a1/d2;
-        :Write lock 写锁
-            /d1/d2/leaf;
-    end split
+    :Create file;
+    :Read lock 读锁
+        /d1
+        /a1/d2;
+    :Write lock 写锁
+       /d1/d2/leaf;
+
 end
 @enduml

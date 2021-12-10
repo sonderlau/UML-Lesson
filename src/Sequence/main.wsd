@@ -1,4 +1,4 @@
-@startuml "Login"
+@startuml "顺序图 - Login"
 
 actor "User" as user
 participant "认证" as authority

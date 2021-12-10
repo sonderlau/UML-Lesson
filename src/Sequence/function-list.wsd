@@ -1,4 +1,4 @@
-@startuml "List"
+@startuml "顺序图 - List"
 
 user -> Calibration_center : 发送lease进行校验
 activate Calibration_center

@@ -1,0 +1,14 @@
+@startuml "活动图 - Chunkserver - 备份"
+start
+:备份至Backupserver;
+note right
+    即时同步
+end note
+
+:备份至Shadow Server;
+note right
+   准及时同步
+   只读
+end note
+end
+@enduml

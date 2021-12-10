@@ -1,4 +1,4 @@
-@startuml "Master"
+@startuml "状态图 - Master"
 left to right direction
 state "空闲" as free
 state "忙碌" as busy

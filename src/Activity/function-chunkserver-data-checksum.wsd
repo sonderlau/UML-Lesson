@@ -1,0 +1,19 @@
+@startuml "活动图 - ChunkServer - 数据完整性校验"
+start
+    :数据完整性;
+    note right
+        32 位数据校验
+        独立于用户的数据
+    end note
+
+    :向用户传输数据之前;
+    :Master - 校验;
+    if(错误?) then(寻找其他可用的replica)
+    else(no)
+        :返回;
+    endif
+
+
+
+end
+@enduml

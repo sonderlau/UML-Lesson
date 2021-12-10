@@ -1,4 +1,4 @@
-@startuml "活动图"
+@startuml "活动图 - 主"
 
 
 if(已注册?) then (Yes)

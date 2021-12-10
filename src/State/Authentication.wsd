@@ -1,4 +1,4 @@
-@startuml "Authentication"
+@startuml "状态图 - Authentication"
 left to right direction
 state c <<choice>>
 state "通过" as pass

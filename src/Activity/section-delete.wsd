@@ -1,4 +1,4 @@
-@startuml "Delete"
+@startuml "活动图 - Delete"
 
 |Client|
 start
