@@ -15,20 +15,28 @@ component [Database] as db
 interface "RPC" as rpc_m
 interface "RPC" as rpc_cs
 interface "API" as api
+interface "Authentication" as auth
+interface "Controller" as controller
+interface "Feedback" as feedback
 
 master .up.> master_backup : 传输备份
-master .right.> chunkserver
-master -up- rpc_m : 进行通信
+master -down- feedback
+master -- rpc_m : 进行通信
+master .-> rpc_cs
 
-chunkserver -up- rpc_cs : 进行通信
-chunkserver .down.> client
+chunkserver -- rpc_cs : 进行通信
+chunkserver -- controller
 
-client .up.> chunkserver
-client .left.> authentication
+client ..> controller
+client ..> auth
+client ..> rpc_m
+client -right- api
 
-authentication .up.> master
+authentication .up.> feedback
+authentication -right- auth
 authentication .down.> db
 
-client -down- api
+
+
 
 @enduml

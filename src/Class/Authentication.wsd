@@ -1,0 +1,12 @@
+@startuml "类图 - 鉴权"
+
+class UserInfomationAuthority {
+    login (username, password)
+    checksum(user, operation)
+}
+
+interface Authentication
+
+UserInfomationAuthority -- Authentication
+
+@enduml

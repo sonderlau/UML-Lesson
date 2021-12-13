@@ -25,7 +25,7 @@ namespace chunkserver {
         - padChunk(handle gfs.ChunkHandle, version gfs.ChunkVersion) error
 
         + RPCReportSelf(args gfs.ReportSelfArg, reply *gfs.ReportSelfReply) error
-        + Shutdown() 
+        + Shutdown()
         + RPCCheckVersion(args gfs.CheckVersionArg, reply *gfs.CheckVersionReply) error
         + RPCForwardData(args gfs.ForwardDataArg, reply *gfs.ForwardDataReply) error
         + RPCCreateChunk(args gfs.CreateChunkArg, reply *gfs.CreateChunkReply) error
@@ -57,15 +57,10 @@ namespace chunkserver {
         - expire time.Duration
         - tick time.Duration
 
-        + Set(id gfs.DataBufferID, data []byte) 
+        + Set(id gfs.DataBufferID, data []byte)
         + Get(id gfs.DataBufferID) ([]byte, bool)
         + Fetch(id gfs.DataBufferID) ([]byte, error)
-        + Delete(id gfs.DataBufferID) 
-
-    }
-    class downloadItem  {
-        - data []byte
-        - expire time.Time
+        + Delete(id gfs.DataBufferID)
 
     }
     class RWMutex
@@ -80,6 +75,9 @@ namespace chunkserver {
 
     downloadBuffer --> RWMutex
 
+    ChunkServer --> chunkInfo
+
+    ChunkServer --> downloadBuffer
 
 }
 
