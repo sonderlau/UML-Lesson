@@ -1,1 +1,0 @@
-![组件图](DeploymentANDComponent.assets/%E7%BB%84%E4%BB%B6%E5%9B%BE.svg)
