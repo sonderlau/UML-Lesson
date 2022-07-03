@@ -1,5 +1,7 @@
 # UML-Lesson
 
+**四人全部获得优秀🙂**
+
 ## 上手步骤
 
 1.  clone 本仓库
@@ -16,16 +18,18 @@
 
 ## 项目结构说明
 
-| 文件或文件夹                                                  | 说明               | 注                                         |
-| ------------------------------------------------------- | ---------------- | ----------------------------------------- |
-| plantuml.jar                                            | plantuml jar执行文件 | 可直接运行并输出                                  |
-| src/                                                    | 编写uml图的源代码储存地址   | 建议使用`.puml`或`.wsd` 作为文件格式 当然`.txt`等格式也不影响 |
-| reference/gfs-sosp2003.pdf                              | GFS 论文           | 纯英文版 可以到网上找译文                             |
-| reference/PlantUML_Language_Reference_Guide_zh.pdf      | PlantUML 语法参考指南  |                                           |
-| reference/goGFS                                         | 项目实现源码(Go)       | 推荐参考此项目 写的很好                              |
-| reference/Google-File-System-Implementation-with-Python | 项目实现源码(Python)   |                                           |
-| out/                                                    | 输出图片存放           | 推荐输出 `svg` 格式图片                           |
-| docs/                                                   | 用于交作业的word文件存储   |                                           |
+| 文件或文件夹                                              | 说明                     | 注                                 |
+| --------------------------------------------------------- | ------------------------ | ---------------------------------- |
+| `plantuml.jar`                                            |                          |                                    |
+| `GoogleFileSystemDesignModel.mdl`                         | Rose 的导出文件          | 只用于交作业 不够美观              |
+| `mid-term.md`                                             | 期中报告                 |                                    |
+| `src/`                                                    | UML图的源代码            | 建议使用`.puml`或`.wsd` 文件格式   |
+| `reference/gfs-sosp2003.pdf`                              | GFS 论文                 | 英文版 可以到网上找译文            |
+| `reference/PlantUML_Language_Reference_Guide_zh.pdf`      | PlantUML 语法参考指南    |                                    |
+| `reference/goGFS`                                         | 项目实现源码(Go)         | 推荐参考此项目 写的很好            |
+| `reference/Google-File-System-Implementation-with-Python` | 项目实现源码(Python)     |                                    |
+| `out/`                                                    | 输出图片存放             | 推荐 `svg` 格式                    |
+| `docs/`                                                   | 用于交作业的word文件存储 | 项目内只保留期中和期末的 docx 文件 |
 
 ## 操作指南
 
@@ -33,7 +37,7 @@
 
 *   Java **必需**
 
-*   Graphviz **大部分图的绘制都需要 因此也是必需**
+*   Graphviz **必需**
 
 由于项目中 **二进制文件** 过多 因此使用了 `Git LFS`
 
@@ -43,13 +47,15 @@
 
 网上下载安装即可
 
-Orace AdoptOpenJDK 都可以
+Orace 或 AdoptOpenJDK 都可以
 
 #### Graphviz
 
 [Graphviz Download](https://www.graphviz.org/download/)
 
 下载安装即可
+
+
 
 ### VS Code
 
@@ -65,6 +71,8 @@ Orace AdoptOpenJDK 都可以
 
 > 推荐输出 `svg` 格式 其他格式有输出的结果不全的问题
 
+
+
 ### 命令行
 
 ```bash
@@ -73,37 +81,53 @@ java -jar plantuml.jar -charset utf-8 -svg /src/Class.wsd -o /out/
 
 **不推荐使用 但如果有需要可以按照上述的格式进行输出**
 
+
+
 ### commit
 
 每次完成之后记得使用 commit 并 push 你的提交
 
 如果是非项目成员 可 Fork 后提交 `pull request`
 
+
+
 ### 参考资料
 
 *   网友的 Demo 集合 [Real World PlantUML](https://real-world-plantuml.com/)
-
 *   [PlantUML Homepage](https://plantuml.com/zh/)
-
 *   Google File System 解读
 
     *   <https://cloud.tencent.com/developer/article/1783774>
-
-    *   <https://duanmeng.github.io/2017/12/07/gfs-notes/>
-
+*   <https://duanmeng.github.io/2017/12/07/gfs-notes/>
     *   <https://mr-dai.github.io/gfs/>
-
-    *   <https://andrewei1316.github.io/2020/10/05/google-file-system/>
+*   <https://andrewei1316.github.io/2020/10/05/google-file-system/>
+    *   `reference/Notes-Google File System.one` **个人总结笔记**
+*   `reference/Notes-Google File System.pdf` **个人总结笔记** 为上一个的 pdf 导出
 
 
 
 ## 分工
 
-| Chapter  | 人员     | 备注           |
-| -------- | -------- | -------------- |
-| Usecase  | 洪 潘    |                |
-| Class    | 刘       |                |
-| Activity | 刘       |                |
-| Mid-Term | 洪 潘 刘 | 整合前三次作业 |
-| Sequence | 刘 洪    |                |
+| Chapter      | 人员     | 备注               |
+| ------------ | -------- | ------------------ |
+| Usecase      | 洪 潘    |                    |
+| Class        | 刘       |                    |
+| Activity     | 刘       |                    |
+| Mid-Term     | 洪 潘 刘 | 整合前三次作业     |
+| Sequence     | 刘 洪    |                    |
+| Component    | 洪 潘 刘 |                    |
+| Deployment   | 洪 潘 刘 |                    |
+| Rose         | 洪 潘 刘 | 使用 Rose 重绘     |
+| Final Report | 江       | 整合图表的最终报告 |
+
+
+
+| 姓名 | 贡献度 |
+| :--: | :----: |
+|  刘  |  28 %  |
+|  洪  |  25 %  |
+|  潘  |  25 %  |
+|  江  |  22 %  |
+
+
 
